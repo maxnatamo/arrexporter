@@ -22,6 +22,10 @@ namespace ArrExporter.Models
         [Column("section_type", IsTag = true)]
         public string SectionType { get; set; } = default!;
 
+        [JsonProperty("child_count")]
+        [Column("child_count", IsTag = true)]
+        public string ChildCount { get; set; } = default!;
+
         [JsonProperty("count")]
         [Column("count", IsTag = true)]
         public string Count { get; set; } = default!;
