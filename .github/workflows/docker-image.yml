@@ -6,7 +6,6 @@ on:
       - created
 
 env:
-  REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -24,7 +23,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5.9
         with:
           registry: ghcr.io
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          image: ${{ env.IMAGE_NAME }}
           addLatest: true
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
