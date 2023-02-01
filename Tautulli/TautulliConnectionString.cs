@@ -6,7 +6,8 @@ namespace ArrExporter.Tautulli
     public class TautulliConnectionString
     {
         /// <summary>
-        /// The Url, hostname or address of the Tautulli server. No subpaths should be included.
+        /// The Url, hostname or address of the Tautulli server.
+        /// No subpaths should be included, the the scheme should.
         /// </summary>
         /// <example>
         /// http://10.0.0.10:8181

@@ -44,8 +44,9 @@ namespace ArrExporter
         /// <summary>
         /// Create a new TautulliClient and read configuration from environment variables.
         /// </summary>
+        /// <param name="influxClient">The InfluxClient to use for ingestion.</param>
         /// <returns>A Task whose result is the resulting TautulliClient.</returns>
-        private static async Task<TautulliClient> CreateTautulliClient()
+        private static async Task<TautulliClient> CreateTautulliClient(InfluxClient influxClient)
         {
             TautulliConnectionString tautulliConnectionString = new TautulliConnectionString
             {
@@ -56,7 +57,7 @@ namespace ArrExporter
                     ?? throw new ArgumentNullException("TAUTULLI_API_KEY")
             };
 
-            var client = new TautulliClient(tautulliConnectionString);
+            var client = new TautulliClient(tautulliConnectionString, influxClient);
 
             if(!await client.PingAsync())
             {
@@ -77,15 +78,14 @@ namespace ArrExporter
                 .CreateLogger();
 
             InfluxClient influxClient = await CreateInfluxClient();
-            TautulliClient tautulliClient = await CreateTautulliClient();
 
-            Broker broker = new Broker(influxClient, tautulliClient);
+            TautulliClient tautulliClient = await CreateTautulliClient(influxClient);
 
             while(true)
             {
                 Log.Information("Updating data...");
 
-                await broker.Render();
+                await tautulliClient.Render();
 
                 Log.Information("Update complete.");
 
