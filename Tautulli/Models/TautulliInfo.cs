@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using InfluxDB.Client.Core;
 
-namespace ArrExporter.Models
+namespace ArrExporter.Tautulli.Models
 {
     /// <summary>
     /// Model for the get_tautulli_info-command.

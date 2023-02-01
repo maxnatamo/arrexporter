@@ -1,6 +1,6 @@
 using ArrExporter.Influx;
 using ArrExporter.Tautulli;
-using ArrExporter.Models;
+using ArrExporter.Tautulli.Models;
 
 namespace ArrExporter
 {
@@ -59,7 +59,12 @@ namespace ArrExporter
 
             foreach(var user in usernames)
             {
-                await this.RenderDataPointList<Users>(
+                if(user.UserId == 0)
+                {
+                    continue;
+                }
+
+                await this.RenderDataPoint<Users>(
                     "get_user", new
                     {
                         user_id = user.UserId,

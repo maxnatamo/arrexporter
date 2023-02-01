@@ -3,7 +3,7 @@ using Flurl.Http;
 using Serilog;
 using Newtonsoft.Json;
 
-using ArrExporter.Models;
+using ArrExporter.Tautulli.Models;
 
 namespace ArrExporter.Tautulli
 {

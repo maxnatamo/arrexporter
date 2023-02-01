@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using InfluxDB.Client.Core;
 
-namespace ArrExporter.Models
+namespace ArrExporter.Tautulli.Models
 {
     /// <summary>
     /// Model for the get_user-command.
@@ -54,7 +54,7 @@ namespace ArrExporter.Models
         [Column("keep_history", IsTag = true)]
         public int KeepHistory { get; set; } = default!;
 
-        [JsonProperty("last_seen")]
+        [JsonProperty("last_seen", NullValueHandling = NullValueHandling.Ignore)]
         [Column("last_seen", IsTag = true)]
         public int LastSeen { get; set; } = default!;
 
