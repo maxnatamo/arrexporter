@@ -1,4 +1,4 @@
-namespace ArrExporter.Tautulli
+namespace ArrExporter.Module.Tautulli
 {
     /// <summary>
     /// Structure for defining connection strings to a Tautulli API endpoint.

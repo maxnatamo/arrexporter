@@ -1,9 +1,9 @@
 ﻿using Serilog;
 
 using ArrExporter.Influx;
-using ArrExporter.Tautulli;
+using ArrExporter.Module.Tautulli;
 
-namespace ArrExporter
+namespace ArrExporter.Core
 {
     public static class Program
     {

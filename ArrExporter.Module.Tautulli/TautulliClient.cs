@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 
 using ArrExporter.Shared;
 using ArrExporter.Influx;
-using ArrExporter.Tautulli.Models;
+using ArrExporter.Module.Tautulli.Models;
 
-namespace ArrExporter.Tautulli
+namespace ArrExporter.Module.Tautulli
 {
     /// <summary>
     /// Wrapper around the Tautulli API queries.

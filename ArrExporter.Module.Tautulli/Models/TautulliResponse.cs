@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace ArrExporter.Tautulli.Models
+namespace ArrExporter.Module.Tautulli.Models
 {
     /// <summary>
     /// Base response for all Tautulli API queries.

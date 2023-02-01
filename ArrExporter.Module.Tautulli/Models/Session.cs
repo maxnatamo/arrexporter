@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using InfluxDB.Client.Core;
 
-namespace ArrExporter.Tautulli.Models
+namespace ArrExporter.Module.Tautulli.Models
 {
     /// <summary>
     /// Model for the get_activity-command.
