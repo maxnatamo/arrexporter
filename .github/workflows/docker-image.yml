@@ -5,9 +5,6 @@ on:
     types:
       - created
 
-env:
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -23,7 +20,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5.9
         with:
           registry: ghcr.io
-          image: ${{ env.IMAGE_NAME }}
+          image: ${{ github.event.repository.name }}
           addLatest: true
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
