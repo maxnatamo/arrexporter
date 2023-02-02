@@ -1,8 +1,8 @@
 # ArrExporter
 
-ArrExporter is a simple standalone application that can query other self-hosted applications, like Tautulli. It ingests the data into an Influx database, so it can be used with Grafana. 
+ArrExporter is a simple standalone application that can query other self-hosted applications, like Tautulli and the *Arr-suite. It ingests the data into an Influx database, so it can be used with Grafana. 
 
-Currently, only Tautulli is supported for Plex monitoring.
+Currently, only Tautulli and Radarr are supported, but support for Sonarr and Overseerr is planned.
 
 ## Getting Started
 
@@ -37,8 +37,13 @@ services:
       - INFLUX_ORG=arrexporter
       - INFLUX_BUCKET=arrexporter
 
+      - TAUTULLI_URL=true # Set to false to disable
       - TAUTULLI_URL=http://tautulli:8086 # URL to your Tautulli instance.
       - TAUTULLI_API_KEY= # API key from Tautulli: Settings -> Web Interface
+
+      - RADARR_ENABLED=true # Set to false to disable
+      - RADARR_URL=http://radarr:7878 # URL to your Radarr instance.
+      - RADARR_API_KEY= # API key from Radarr: Settings -> General
     depends_on:
       - influx
     restart: unless-stopped
