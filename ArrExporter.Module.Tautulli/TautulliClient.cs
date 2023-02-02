@@ -181,13 +181,13 @@ namespace ArrExporter.Module.Tautulli
             string result = await (await url.GetAsync()).GetStringAsync();
 
             TautulliResponse? response = JsonConvert.DeserializeObject<TautulliResponse>(result);
-            if(response == null || response.Response == null || response.Response.Data == null)
+            if(response == null || response == null || response.Data == null)
             {
                 Log.Fatal("Failed to query Tautulli API: cmd={0}", cmd);
                 throw new InvalidDataException();
             }
 
-            dynamic? data = response?.Response?.Data;
+            dynamic? data = response?.Data;
             if(data == null)
             {
                 Log.Fatal("Failed to deserialize Tautulli response: cmd={0}", cmd);
