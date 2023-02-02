@@ -19,6 +19,9 @@ namespace ArrExporter.Module.Tautulli
         /// </summary>
         private readonly TautulliConnectionString connectionString;
 
+        /// <summary>
+        /// The InfluxClient to use for ingesting.
+        /// </summary>
         private readonly InfluxClient influxClient;
 
         /// <summary>
@@ -37,6 +40,12 @@ namespace ArrExporter.Module.Tautulli
 
             this.apiEndpoint = Url.Combine(connectionString.Url, "/api/v2");
         }
+
+        /// <summary>
+        /// Returns the name of the client.
+        /// </summary>
+        /// <returns>"Tautulli" as string.</returns>
+        public string Name() => "Tautulli";
 
         /// <summary>
         /// Ping the server to determine if the client is authenticated.
@@ -66,63 +75,6 @@ namespace ArrExporter.Module.Tautulli
             }
             
             return true;
-        }
-
-        /// <summary>
-        /// Query the Tautulli API with the specified command and optional arguments.
-        /// </summary>
-        /// <param name="cmd">The Tautulli API command to query. </param>
-        /// <param name="args">Optional arguments to the API query.</param>
-        /// <param name="selector">An optional selector for nested JSON objects.</param>
-        /// <typeparam name="T">The model to use for model binding.</typeparam>
-        /// <returns>The resulting model from the API</returns>
-        /// <exception cref="InvalidDataException">Thrown if the returned model is invalid.</exception>
-        /// <seealso cref="Broker.Render">Example of using Query</seealso>
-        /// <seealso href="https://github.com/Tautulli/Tautulli/wiki/Tautulli-API-Reference">Tautulli API reference</seealso>
-        public async Task<T> Query<T>(string cmd, object? args = null, Func<dynamic, dynamic>? selector = null)
-        {
-            var url = this.apiEndpoint.SetQueryParams(new
-            {
-                apikey = this.connectionString.ApiKey,
-                cmd = cmd
-            });
-
-            if(args != null)
-            {
-                url.SetQueryParams(args);
-            }
-
-            string result = await (await url.GetAsync()).GetStringAsync();
-
-            TautulliResponse? response = JsonConvert.DeserializeObject<TautulliResponse>(result);
-            if(response == null || response.Response == null || response.Response.Data == null)
-            {
-                Log.Fatal("Failed to query Tautulli API: cmd={0}", cmd);
-                throw new InvalidDataException();
-            }
-
-            dynamic? data = response?.Response?.Data;
-            if(data == null)
-            {
-                Log.Fatal("Failed to deserialize Tautulli response: cmd={0}", cmd);
-                throw new InvalidDataException();
-            }
-
-            if(selector != null)
-            {
-                data = selector(data);
-            }
-
-            string json = JsonConvert.SerializeObject(data);
-            T? obj = JsonConvert.DeserializeObject<T>(json);
-
-            if(obj == null)
-            {
-                Log.Fatal("Failed to deserialize Tautulli response: cmd={0}", cmd);
-                throw new InvalidDataException();
-            }
-
-            return obj;
         }
 
         /// <summary>
@@ -200,6 +152,63 @@ namespace ArrExporter.Module.Tautulli
             this.influxClient.Write(api => api.WriteMeasurements(data));
 
             return data;
+        }
+
+        /// <summary>
+        /// Query the Tautulli API with the specified command and optional arguments.
+        /// </summary>
+        /// <param name="cmd">The Tautulli API command to query. </param>
+        /// <param name="args">Optional arguments to the API query.</param>
+        /// <param name="selector">An optional selector for nested JSON objects.</param>
+        /// <typeparam name="T">The model to use for model binding.</typeparam>
+        /// <returns>The resulting model from the API</returns>
+        /// <exception cref="InvalidDataException">Thrown if the returned model is invalid.</exception>
+        /// <seealso cref="Render">Example of using Query</seealso>
+        /// <seealso href="https://github.com/Tautulli/Tautulli/wiki/Tautulli-API-Reference">Tautulli API reference</seealso>
+        private async Task<T> Query<T>(string cmd, object? args = null, Func<dynamic, dynamic>? selector = null)
+        {
+            var url = this.apiEndpoint.SetQueryParams(new
+            {
+                apikey = this.connectionString.ApiKey,
+                cmd = cmd
+            });
+
+            if(args != null)
+            {
+                url.SetQueryParams(args);
+            }
+
+            string result = await (await url.GetAsync()).GetStringAsync();
+
+            TautulliResponse? response = JsonConvert.DeserializeObject<TautulliResponse>(result);
+            if(response == null || response.Response == null || response.Response.Data == null)
+            {
+                Log.Fatal("Failed to query Tautulli API: cmd={0}", cmd);
+                throw new InvalidDataException();
+            }
+
+            dynamic? data = response?.Response?.Data;
+            if(data == null)
+            {
+                Log.Fatal("Failed to deserialize Tautulli response: cmd={0}", cmd);
+                throw new InvalidDataException();
+            }
+
+            if(selector != null)
+            {
+                data = selector(data);
+            }
+
+            string json = JsonConvert.SerializeObject(data);
+            T? obj = JsonConvert.DeserializeObject<T>(json);
+
+            if(obj == null)
+            {
+                Log.Fatal("Failed to deserialize Tautulli response: cmd={0}", cmd);
+                throw new InvalidDataException();
+            }
+
+            return obj;
         }
     }
 }
