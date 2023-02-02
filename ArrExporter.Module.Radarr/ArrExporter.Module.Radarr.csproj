@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ArrExporter.Shared\ArrExporter.Shared.csproj" />
+    <ProjectReference Include="..\ArrExporter.Influx\ArrExporter.Influx.csproj" />
   </ItemGroup>
 
   <ItemGroup>
